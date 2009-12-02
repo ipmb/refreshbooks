@@ -24,23 +24,23 @@ setup(
         from refreshbooks import api
         
         c = api.OAuthClient(
-        	'example.freshbooks.com',
-        	'consumerkey',
-        	'My Consumer Secret',
-        	'An existing token',
-        	'An existing token secret'
+            'example.freshbooks.com',
+            'consumerkey',
+            'My Consumer Secret',
+            'An existing token',
+            'An existing token secret'
         )
         
         response = c.invoice.create(
             invoice=dict(
-            	client_id='8',
-            	lines=[
-            		api.types.line(
-            			name='Yard Work',
-            			unit_cost='10',
-            			quantity='4'
-            		)
-            	]
+                client_id='8',
+                lines=[
+                    api.types.line(
+                        name='Yard Work',
+                        unit_cost='10',
+                        quantity='4'
+                    )
+                ]
             )
         )
         
