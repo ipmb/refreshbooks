@@ -1,4 +1,9 @@
-from setuptools import setup, find_packages
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    from ez_setup import use_setuptools
+    use_setuptools()
+    from setuptools import setup, find_packages
 
 setup(
     name='refreshbooks',
@@ -80,8 +85,13 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
     
-    packages = find_packages(exclude=['*.test', '*.test.*']),
+    packages=[
+        'refreshbooks'
+    ],
     
+    setup_requires=[
+        'setuptools-git'
+    ],
     tests_require=[
         'nose',
         'mock'
