@@ -10,8 +10,8 @@ setup(
     version='1.0',
     author='Owen Jacobson',
     author_email='api@freshbooks.com',
-    url='http://alchemy.grimoire.ca/python/sites/sparkplug/',
-    download_url='http://alchemy.grimoire.ca/python/releases/sparkplug/',
+    url='http://github.com/freshbooks/refreshbooks',
+    download_url='http://pypi.python.org/pypi/refreshbooks/',
     description='A client library for the FreshBooks API',
     
     long_description="""
