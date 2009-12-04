@@ -15,10 +15,7 @@ setup(
     description='A client library for the FreshBooks API',
     
     long_description="""
-    ReFreshBooks
-    ============
-    
-    ReFreshBooks provides a simple synchronous API for manipulating FreshBooks 
+    Refreshbooks provides a simple synchronous API for manipulating FreshBooks 
     invoices, clients, and other data::
     
         from refreshbooks import api
