@@ -40,7 +40,10 @@ def AuthorizingClient(domain, auth, request_encoder, response_decoder):
     an auth object.
     """
     
-    http_transport = transport.HttpTransport(api_url(domain), auth)
+    http_transport = transport.HttpTransport(
+        api_url(domain),
+        transport.KeepAliveHeaders(auth)
+    )
     
     return client.Client(
         request_encoder,

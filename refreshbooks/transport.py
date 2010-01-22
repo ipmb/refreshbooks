@@ -49,6 +49,16 @@ class TokenAuthorization(object):
     def __call__(self):
         return self.headers
 
+class KeepAliveHeaders(object):
+    def __init__(self, base_headers_factory):
+        self.base_headers_factory = base_headers_factory
+    
+    def __call__(self):
+        headers = self.base_headers_factory()
+        headers['Connection'] = 'Keep-Alive'
+        
+        return headers
+
 class TransportException(Exception):
     def __init__(self, reason):
         self.reason = reason
