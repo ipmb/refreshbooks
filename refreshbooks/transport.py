@@ -68,13 +68,13 @@ class TransportException(Exception):
 
 class HttpTransport(object):
     def __init__(self, url, headers_factory):
+        self.client = httplib2.Http()
         self.url = url
         self.headers_factory = headers_factory
     
     def __call__(self, entity):
-        client = httplib2.Http()
         
-        resp, content = client.request(
+        resp, content = self.client.request(
             self.url,
             'POST',
             headers=self.headers_factory(),
