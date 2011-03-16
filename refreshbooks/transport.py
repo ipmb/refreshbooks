@@ -60,11 +60,15 @@ class KeepAliveHeaders(object):
         return headers
 
 class TransportException(Exception):
-    def __init__(self, reason):
-        self.reason = reason
+    def __init__(self, status, content):
+        self.status = status
+        self.content = content
     
     def __str__(self):
-        return repr(self.reason)
+        return repr(self)
+    
+    def __repr__(self):
+        return "TransportException(%r, %r)" % (self.status, self.content)
 
 class HttpTransport(object):
     def __init__(self, url, headers_factory):
@@ -81,6 +85,6 @@ class HttpTransport(object):
             body=entity
         )
         if resp.status >= 400:
-            raise TransportException(resp.status)
+            raise TransportException(resp.status, content)
         
         return content
