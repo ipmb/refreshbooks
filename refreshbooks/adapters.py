@@ -1,6 +1,11 @@
 from lxml import etree, objectify
+import decimal
 
 from refreshbooks import elements, client
+
+# To make life nicer for clients, allow built-in numeric-alike types
+# in API parameters.
+_stringable_types = frozenset([float, int, decimal.Decimal])
 
 def encode_as_simple_from_element(name, value):
     """Creates an etree element following the simple field convention. To 
@@ -18,16 +23,23 @@ def encode_as_simple_from_element(name, value):
 
 def encode_as_simple(name, value):
     """Creates an etree element following the simple field convention. Values
-    are assumed to be strs or unicodes already:
+    are assumed to be strs, unicodes, ints, floats, or Decimals:
     
         >>> element = encode_as_simple('foo', '5')
         >>> element.tag == 'foo'
         True
         >>> element.text == '5'
         True
+        >>> element = encode_as_simple('bar', 8)
+        >>> element.tag == 'bar'
+        True
+        >>> element.text == '8'
+        True
     """
     if isinstance(value, objectify.ObjectifiedDataElement):
         return encode_as_simple(name, unicode(value))
+    if type(value) in _stringable_types:
+        value = str(value)
     return elements.field(name, value)
 
 def encode_as_dict(_name, **kwargs):
@@ -43,6 +55,7 @@ def encode_as_list_of_dicts(name, *args):
     ])
 
 def encode_parameter(name, value):
+    print "encoding %s, %r" % (name, value, )
     # This type-checking order is delicate. Don't touch it until you 
     # understand the interactions between:
     #
@@ -58,14 +71,18 @@ def encode_parameter(name, value):
     # We do this so that we don't need to maintain a list of mappings for
     # every Freshbooks API document type. You're welcome.
     try:
+        print "encoding as simple from element %s, %r" % (name, value, )
         return encode_as_simple_from_element(name, value)
     except AttributeError:
         try:
+            print "encoding as dict %s, %r" % (name, value, )
             return encode_as_dict(name, **value)
         except TypeError:
             try:
+                print "encoding as simple %s, %r" % (name, value, )
                 return encode_as_simple(name, value)
             except TypeError:
+                print "encoding as list of dicts %s, %r" % (name, value, )
                 return encode_as_list_of_dicts(name, *value)
 
 def xml_request(method, **params):
