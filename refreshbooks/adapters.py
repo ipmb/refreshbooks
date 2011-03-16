@@ -55,7 +55,6 @@ def encode_as_list_of_dicts(name, *args):
     ])
 
 def encode_parameter(name, value):
-    print "encoding %s, %r" % (name, value, )
     # This type-checking order is delicate. Don't touch it until you 
     # understand the interactions between:
     #
