@@ -71,18 +71,14 @@ def encode_parameter(name, value):
     # We do this so that we don't need to maintain a list of mappings for
     # every Freshbooks API document type. You're welcome.
     try:
-        print "encoding as simple from element %s, %r" % (name, value, )
         return encode_as_simple_from_element(name, value)
     except AttributeError:
         try:
-            print "encoding as dict %s, %r" % (name, value, )
             return encode_as_dict(name, **value)
         except TypeError:
             try:
-                print "encoding as simple %s, %r" % (name, value, )
                 return encode_as_simple(name, value)
             except TypeError:
-                print "encoding as list of dicts %s, %r" % (name, value, )
                 return encode_as_list_of_dicts(name, *value)
 
 def xml_request(method, **params):
