@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='refreshbooks',
-    version='1.1',
+    version='1.2',
     author='Owen Jacobson',
     author_email='api@freshbooks.com',
     url='http://github.com/freshbooks/refreshbooks',
