@@ -49,6 +49,18 @@ setup(
             invoice_response.invoice.number,
             invoice_response.invoice.invoice_id
         )
+        
+        invoices_response = c.invoice.list()
+        
+        print "There are %d pages of invoices." % (
+            invoices_response.invoices.attrib['pages'],
+        )
+        
+        for invoice in invoices_response.invoices.invoice:
+            print "Invoice %s total: %s" % (
+                invoice.invoice_id,
+                invoice.amount
+            )
     
     Consumer keys and secrets can be obtained from FreshBooks. This library
     does not handle negotiating for an OAuth token+secret pair; see the
