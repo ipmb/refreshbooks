@@ -52,7 +52,7 @@ setup(
         
         invoices_response = c.invoice.list()
         
-        print "There are %d pages of invoices." % (
+        print "There are %s pages of invoices." % (
             invoices_response.invoices.attrib['pages'],
         )
         
