@@ -49,15 +49,23 @@ class TokenAuthorization(object):
     def __call__(self):
         return self.headers
 
-class KeepAliveHeaders(object):
+class UserAgentHeaders(object):
     def __init__(self, base_headers_factory, user_agent):
         self.base_headers_factory = base_headers_factory
         self.user_agent = user_agent
     
     def __call__(self):
         headers = self.base_headers_factory()
-        headers['Connection'] = 'Keep-Alive'
         headers['User-Agent'] = self.user_agent
+        return headers
+
+class KeepAliveHeaders(object):
+    def __init__(self, base_headers_factory):
+        self.base_headers_factory = base_headers_factory
+    
+    def __call__(self):
+        headers = self.base_headers_factory()
+        headers['Connection'] = 'Keep-Alive'
         return headers
 
 class TransportException(Exception):
@@ -78,7 +86,7 @@ class HttpTransport(object):
         self.headers_factory = headers_factory
     
     def __call__(self, entity):
-        
+        import pdb; pdb.set_trace()
         resp, content = self.client.request(
             self.url,
             'POST',
