@@ -86,7 +86,7 @@ class HttpTransport(object):
         self.headers_factory = headers_factory
     
     def __call__(self, entity):
-        import pdb; pdb.set_trace()
+        
         resp, content = self.client.request(
             self.url,
             'POST',
