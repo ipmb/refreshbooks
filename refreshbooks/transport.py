@@ -55,7 +55,6 @@ class KeepAliveHeaders(object):
         self.user_agent = user_agent
     
     def __call__(self):
-        print self.user_agent
         headers = self.base_headers_factory()
         headers['Connection'] = 'Keep-Alive'
         headers['User-Agent'] = self.user_agent
