@@ -25,7 +25,8 @@ setup(
             'consumerkey',
             'My Consumer Secret',
             'An existing token',
-            'An existing token secret'
+            'An existing token secret',
+            user_agent='Example/1.0'
         )
         
         response = c.invoice.create(
@@ -71,7 +72,8 @@ setup(
     
         c = api.TokenClient(
             'example.freshbooks.com',
-            'My API token'
+            'My API token',
+            user_agent='Example/1.0'
         )
         
         # ... as above ...
