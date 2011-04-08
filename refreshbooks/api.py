@@ -35,14 +35,14 @@ def logging_response_decoder(response):
     
     return default_response_decoder(response)
 
-def AuthorizingClient(domain, auth, request_encoder, response_decoder):
+def AuthorizingClient(domain, auth, request_encoder, response_decoder, user_agent=''):
     """Creates a Freshbooks client for a freshbooks domain, using
     an auth object.
     """
     
     http_transport = transport.HttpTransport(
         api_url(domain),
-        transport.KeepAliveHeaders(auth)
+        transport.KeepAliveHeaders(auth, user_agent)
     )
     
     return client.Client(
@@ -79,6 +79,7 @@ def OAuthClient(
     consumer_secret,
     token,
     token_secret,
+    user_agent,
     request_encoder=default_request_encoder,
     response_decoder=default_response_decoder
 ):
@@ -101,7 +102,8 @@ def OAuthClient(
             token
         ),
         request_encoder,
-        response_decoder
+        response_decoder,
+        user_agent
     )
 
 def list_element_type(_name, **kwargs):

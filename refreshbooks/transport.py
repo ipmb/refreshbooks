@@ -50,13 +50,15 @@ class TokenAuthorization(object):
         return self.headers
 
 class KeepAliveHeaders(object):
-    def __init__(self, base_headers_factory):
+    def __init__(self, base_headers_factory, user_agent):
         self.base_headers_factory = base_headers_factory
+        self.user_agent = user_agent
     
     def __call__(self):
+        print self.user_agent
         headers = self.base_headers_factory()
         headers['Connection'] = 'Keep-Alive'
-        
+        headers['User-Agent'] = self.user_agent
         return headers
 
 class TransportException(Exception):
