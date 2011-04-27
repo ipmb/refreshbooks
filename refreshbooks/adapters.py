@@ -91,6 +91,42 @@ def xml_request(method, **params):
     
     return etree.tostring(request_document)
 
+class DecimalElement(objectify.NumberElement):
+    def _init(self):
+        super(DecimalElement, self)._init()
+        self._setValueParser(decimal.Decimal)
+    
+    @classmethod
+    def is_decimalizable(cls, text):
+        try:
+            decimal.Decimal(text)
+            return True
+        except decimal.InvalidOperation:
+            return False
+    
+    @classmethod
+    def accepts(cls, element):
+        return len(element) == 0 and cls.is_decimalizable(element.text)
+
+class ObjectifyTypeOverlayLookup(etree.PythonElementClassLookup):
+    def __init__(self, *priority_types):
+        self.priority_types = priority_types
+    
+    def lookup(self, document, element):
+        for priority_type in self.priority_types:
+            if priority_type.accepts(element):
+                return priority_type
+
+# Set up objectify to use custom types
+response_parser = etree.XMLParser()
+overlay = ObjectifyTypeOverlayLookup(DecimalElement)
+overlay.set_fallback(objectify.ObjectifyElementClassLookup())
+response_parser.set_element_class_lookup(overlay)
+
+def xml_response(response):
+    bare_response = objectify.fromstring(response, response_parser)
+    return fail_to_exception_response(bare_response)
+
 def fail_to_exception_response(response):
     if response.attrib['status'] == 'fail':
         raise client.FailedRequest(response.error)

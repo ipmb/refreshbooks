@@ -1,8 +1,6 @@
 import sys
 import functools
 
-import functional
-from lxml import objectify
 import oauth.oauth as oauth
 
 from refreshbooks import client, adapters, transport
@@ -16,10 +14,7 @@ def api_url(domain):
     return "https://%s/api/2.1/xml-in" % (domain, )
 
 default_request_encoder = adapters.xml_request
-default_response_decoder = functional.compose(
-    adapters.fail_to_exception_response,
-    objectify.fromstring
-)
+default_response_decoder = adapters.xml_response
 
 def logging_request_encoder(method, **params):
     encoded = default_request_encoder(method, **params)
