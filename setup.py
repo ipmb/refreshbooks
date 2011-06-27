@@ -85,7 +85,7 @@ setup(
     References:
     
      - http://developers.freshbooks.com/ - The FreshBooks API
-     - http://developers.freshbooks.com/api/oauth/ - FreshBooks and OAuth
+     - http://developers.freshbooks.com/authentication-2/#OAuth - FreshBooks and OAuth
     """,
     
     classifiers=[
