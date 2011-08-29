@@ -1,3 +1,4 @@
+import decimal
 import sys
 import functools
 
@@ -14,6 +15,24 @@ def api_url(domain):
         'https://billing.freshbooks.com/api/2.1/xml-in'
     """
     return "https://%s/api/2.1/xml-in" % (domain, )
+
+
+class DecimalElement(objectify.ObjectifiedDataElement):
+    @property
+    def pyval(self):
+        return decimal.Decimal(self.text)
+
+def check_decimal_element(decimal_string):
+    """Catch decimal's exception and raise the one objectify expects"""
+    try:
+        decimal.Decimal(decimal_string)
+    except decimal.InvalidOperation:
+        raise ValueError
+
+# register the decimal type with objectify
+decimal_type = objectify.PyType('decimal', check_decimal_element, 
+                                DecimalElement)
+decimal_type.register(before='float')
 
 default_request_encoder = adapters.xml_request
 default_response_decoder = functional.compose(
